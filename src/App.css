@@ -29,6 +29,12 @@
   border: 1px solid #c0c0c0;
 }
 
+.game-cell--alive {
+  background-color: black;
+}
 
+.game-cell--dead {
+  background-color: white;
+}
 
 

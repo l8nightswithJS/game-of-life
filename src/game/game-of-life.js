@@ -8,10 +8,10 @@ import React, {useState, useEffect} from "react";
 */
 
 const GameOfLife = () => {
-  const [initCellState, setInitCellState] = useState({
+  const [initCells, setInitCells] = useState({
     cells: []
   });
-  const [fieldData, setFieldData] = useState({
+  const [fieldData] = useState({
     columns: 25,
     rows: 25
   });
@@ -20,7 +20,7 @@ const GameOfLife = () => {
     Dead: false
   })
 
-  console.log(fieldData.columns, initCellState.cells);
+  
 
   useEffect(() => {
     let cells = [];
@@ -30,28 +30,40 @@ const GameOfLife = () => {
         cells[columnIndex][rowIndex] = cellState.Dead;
       }
     }
-    return setInitCellState({cells: cells})
-  }, [setInitCellState.cells])
+    return setInitCells({cells: cells})
+  }, [setInitCells.cells])
 
   const renderCells = () => {
     return (
       <div className="game-cells">
-        {initCellState.cells.map((rows, columnIndex) => {
+        {initCells.cells.map((rows, columnIndex) => {
           return renderCols(rows, columnIndex)
         })}
       </div>
     )
   }
+  
+  const toggleLifeDeath = (columnIndex, rowIndex) => {
+    
+    const newCellState = initCells.cells;
+
+    newCellState[columnIndex][rowIndex] = !newCellState[columnIndex[rowIndex]];
+    setInitCells({cells: newCellState})
+    console.log(initCells.cells, columnIndex, rowIndex, cellState)
+    
+  }
 
   const renderCols = (rows, columnIndex) => {
     return(
-      <div className="game-cols">
+      <div className="game-cols" key={`column_${columnIndex}`}>
         {rows.map((cellState, rowIndex) => {
-          return <div className="game-cell"/>
+          const cellModifier = cellState === cellState.Dead ? "dead" : "alive";
+          return <div className={`game-cell game-cell--${cellModifier}`} key={`${columnIndex}_${rowIndex}`} onClick={() => toggleLifeDeath(columnIndex, rowIndex)} />
         })}
       </div>
     )
   }
+
   return (
     <div>
       <div>
